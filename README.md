@@ -1,51 +1,57 @@
-Inventory Backend
+# Inventory Backend
 
-A production-oriented inventory management backend built with FastAPI, SQLAlchemy 2.0, PostgreSQL, and Alembic.
+A production-oriented inventory management backend built with **FastAPI, SQLAlchemy 2.0, PostgreSQL, and Alembic**.
 
 The application provides authentication, user-owned inventory management, stock operations, dashboard summaries, CSRF protection, CORS configuration, centralized error handling, logging, and Docker-based development.
 
+---
 
-Features
-• JWT authentication stored in HttpOnly cookies
-• Password hashing with Passlib / bcrypt
-• User authentication and current-user resolution
-• User-owned inventory with strict data isolation
-• Inventory CRUD operations
-• Per-user SKU and item-name uniqueness
-• Inventory filtering and pagination
-• Stock-in and stock-out operations
-• Prevention of negative stock
-• User-scoped dashboard summaries
-• CSRF protection using the double-submit cookie pattern
-• Environment-driven CORS and cookie configuration
-• Centralized application error handling
-• Structured application logging
-• Docker Compose development environment
-• Gunicorn with Uvicorn workers
+## Features
 
+* JWT authentication stored in HttpOnly cookies
+* Password hashing with Passlib / bcrypt
+* User authentication and current-user resolution
+* User-owned inventory with strict data isolation
+* Inventory CRUD operations
+* Per-user SKU and item-name uniqueness
+* Inventory filtering and pagination
+* Stock-in and stock-out operations
+* Prevention of negative stock
+* User-scoped dashboard summaries
+* CSRF protection using the double-submit cookie pattern
+* Environment-driven CORS and cookie configuration
+* Centralized application error handling
+* Structured application logging
+* Docker Compose development environment
+* Gunicorn with Uvicorn workers
 
-Learning Goals
+---
+
+## Learning Goals
 
 This project was built to develop practical experience with:
-• Designing a layered backend architecture
-• Building REST APIs with FastAPI
-• Implementing authentication and authorization
-• Working with JWTs and secure cookies
-• Applying CSRF and CORS protection
-• Designing database models and relationships with SQLAlchemy
-• Managing schema changes with Alembic
-• Separating repositories, services, dependencies, and routers
-• Handling database transactions and integrity errors
-• Implementing user-level data isolation
-• Containerizing applications with Docker
-• Running FastAPI with Gunicorn and Uvicorn
-• Implementing centralized error handling and application logging
 
+* Designing a layered backend architecture
+* Building REST APIs with FastAPI
+* Implementing authentication and authorization
+* Working with JWTs and secure cookies
+* Applying CSRF and CORS protection
+* Designing database models and relationships with SQLAlchemy
+* Managing schema changes with Alembic
+* Separating repositories, services, dependencies, and routers
+* Handling database transactions and integrity errors
+* Implementing user-level data isolation
+* Containerizing applications with Docker
+* Running FastAPI with Gunicorn and Uvicorn
+* Implementing centralized error handling and application logging
 
-Architecture
+---
+
+## Architecture
 
 The backend follows a layered architecture:
 
+```text
 Client
   ↓
 Router
@@ -59,21 +65,24 @@ Repository
 SQLAlchemy
   ↓
 PostgreSQL
+```
 
+### Responsibilities
 
-Responsibilities
-• Routers — HTTP and API concerns
-• Dependencies — authentication, CSRF, and service injection
-• Services — business logic
-• Repositories — database access
-• Models — SQLAlchemy database models
-• Schemas — Pydantic request/response validation
-• Core — configuration, security, CSRF, and logging
-• Exceptions — application-specific errors and handlers
+* **Routers** — HTTP and API concerns
+* **Dependencies** — authentication, CSRF, and service injection
+* **Services** — business logic
+* **Repositories** — database access
+* **Models** — SQLAlchemy database models
+* **Schemas** — Pydantic request/response validation
+* **Core** — configuration, security, CSRF, and logging
+* **Exceptions** — application-specific errors and handlers
 
+---
 
-Project Structure
+## Project Structure
 
+```text
 inventory-backend/
 ├── .venv/
 ├── alembic/
@@ -131,9 +140,11 @@ inventory-backend/
 ├── compose.yaml
 ├── Dockerfile
 ├── requirements.txt
+```
 
+---
 
-Technology Stack
+## Technology Stack
 
 | Area                | Technology                   |
 | ------------------- | ---------------------------- |
@@ -150,17 +161,19 @@ Technology Stack
 | CSRF                | Double-submit cookie pattern |
 | Configuration       | Pydantic Settings            |
 
+---
 
-Authentication
+## Authentication
 
-Authentication uses JWTs stored in HttpOnly cookies.
+Authentication uses JWTs stored in **HttpOnly cookies**.
 
 The authentication flow validates registration data, hashes passwords before persistence, verifies credentials during login, creates JWTs, and resolves the authenticated user through a reusable dependency.
 
 Passwords and password hashes are never exposed through API responses.
 
+---
 
-Inventory API
+## Inventory API
 
 All inventory endpoints require authentication.
 
@@ -178,66 +191,81 @@ Inventory records are scoped to the authenticated user.
 
 The inventory API supports filtering, name search, price and quantity filtering, pagination, stock adjustments, and dashboard summaries.
 
+---
 
-Database
+## Database
 
 PostgreSQL is used as the primary database.
-• PostgreSQL through Docker Compose for local development
-• Render PostgreSQL for production
-• SQLAlchemy 2.0 for database access
-• Alembic for database migrations
+
+* PostgreSQL through Docker Compose for local development
+* Render PostgreSQL for production
+* SQLAlchemy 2.0 for database access
+* Alembic for database migrations
 
 Main tables:
+
+```text
 users
 inventory_items
 alembic_version
+```
 
 Inventory ownership is enforced through `user_id`, with per-user uniqueness for SKU and item name.
 
+---
 
-Security
+## Security
 
-CSRF Protection
+### CSRF Protection
 
-Authenticated state-changing requests require a valid CSRF token using the double-submit cookie pattern.
+Authenticated state-changing requests require a valid CSRF token using the **double-submit cookie pattern**.
 
 The CSRF token is provided through both a cookie and request header and is validated before protected state-changing operations.
 
-CORS
+### CORS
 
 CORS is configured through environment settings with credentials enabled and origins restricted to the configured frontend domain.
 
-Cookies
+### Cookies
 
 Authentication and CSRF cookie behavior is environment-driven, including:
-• Secure
-• HttpOnly
-• SameSite
-• Cookie names
 
+* Secure
+* HttpOnly
+* SameSite
+* Cookie names
 
-Configuration
+---
 
-Configuration is managed through Pydantic Settings.
-• `.env — local` configuration
-• `.env.example` — configuration template
-• Production configuration is supplied through the hosting environment
+## Configuration
+
+Configuration is managed through **Pydantic Settings**.
+
+* `.env` — local configuration
+* `.env.example` — configuration template
+* Production configuration is supplied through the hosting environment
 
 Secrets are not hardcoded in the application source.
 
+---
 
-API Documentation
+## API Documentation
 
 The application provides:
-• Swagger UI — `/docs`
-• ReDoc — `/redoc`
-• Health Check — `/health`
+
+* **Swagger UI** — `/docs`
+* **ReDoc** — `/redoc`
+* **Health Check** — `/health`
 
 The health endpoint returns:
+
+```json
 {"status": "ok"}
+```
 
+---
 
-Runtime and Error Handling
+## Runtime and Error Handling
 
 The application runs with **Gunicorn and Uvicorn workers** and is containerized for local development using Docker Compose.
 
@@ -245,21 +273,24 @@ Application-specific exceptions are handled centrally and return controlled API 
 
 Application logging provides operational information while avoiding sensitive authentication data such as passwords, password hashes, tokens, and cookies.
 
+---
 
-Future Improvements
+## Future Improvements
 
 Potential future improvements include:
-• Automated unit and integration test suites
-• CI/CD pipeline
-• Production deployment configuration
-• API rate limiting
-• Refresh token rotation
-• Automated API documentation enhancements
-• Monitoring and application metrics
-• More advanced inventory reporting
-• Frontend client integration
 
+* Automated unit and integration test suites
+* CI/CD pipeline
+* Production deployment configuration
+* API rate limiting
+* Refresh token rotation
+* Automated API documentation enhancements
+* Monitoring and application metrics
+* More advanced inventory reporting
+* Frontend client integration
 
-License
+---
 
-This project is open source and available under the MIT License.
+## License
+
+Add the project's license information here if and when a license is selected.
