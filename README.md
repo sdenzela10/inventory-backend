@@ -293,4 +293,4 @@ Potential future improvements include:
 
 ## License
 
-Add the project's license information here if and when a license is selected.
+This project is open source and available under the MIT License.
