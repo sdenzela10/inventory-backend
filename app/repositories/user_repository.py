@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -41,7 +43,7 @@ class UserRepository:
 
     def get_user_by_id(
         self,
-        user_id: str,
+        user_id: UUID,
     ) -> User | None:
         statement = select(User).where(User.id == user_id)
 
