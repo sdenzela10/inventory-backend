@@ -13,7 +13,6 @@ from sqlalchemy import (
     Numeric,
     DateTime,
     )
-from sqlalchemy import UUID as SQLAlchemyUUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -44,18 +43,13 @@ class InventoryItem(Base):
     )
 
     id: Mapped[UUID] = mapped_column(
-        SQLAlchemyUUID,
         primary_key=True,
         default=uuid4,
         nullable=False,
     )
 
     user_id: Mapped[UUID] = mapped_column(
-        SQLAlchemyUUID,
-        ForeignKey(
-            "users.id",
-            ondelete="CASCADE",
-        ),
+        ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
