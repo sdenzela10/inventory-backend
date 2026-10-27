@@ -1,3 +1,6 @@
+
+from uuid import UUID
+
 from fastapi import Depends, Request
 
 from app.core.config import settings
@@ -24,6 +27,11 @@ def get_current_user(
     user_id = payload.get("sub")
 
     if not user_id:
+        raise InvalidTokenError()
+
+    try:
+        user_id = UUID(user_id)
+    except (ValueError, TypeError, AttributeError):
         raise InvalidTokenError()
 
     return auth_service.get_authenticated_user(user_id)

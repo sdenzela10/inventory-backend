@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy.exc import IntegrityError
 
 from app.core.security import (
@@ -52,7 +54,7 @@ class AuthService:
 
         return create_access_token(str(user.id))
 
-    def get_authenticated_user(self, user_id: str) -> AuthenticatedUser:
+    def get_authenticated_user(self, user_id: UUID) -> AuthenticatedUser:
         user = self.user_repository.get_user_by_id(user_id)
 
         if user is None:
